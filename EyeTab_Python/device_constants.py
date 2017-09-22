@@ -11,17 +11,23 @@ cam_mat_n7 = np.array([[1062.348, 0.0     , 344.629],
                        [0.0     , 1065.308, 626.738],
                        [0.0     , 0.0     , 1.0]])
 
+cam_mat_n7 = np.array([[  1.78456911e+03,   0.00000000e+00,   1.27525965e+03],
+                       [  0.00000000e+00,   1.78470204e+03,   9.71307473e+02],
+                       [  0.00000000e+00,   0.00000000e+00,   1.00000000e+00]])
+
+dist_coefs_n7 = np.array([[ 0.04880107, -0.06223729,  0.00178674, -0.00152206, -0.16114134]])
+
 # Screen size constants
 screen_w_mm_n7, screen_h_mm_n7 = 94, 151
-screen_w_px_n7, screen_h_px_n7 = 800, 1280
+screen_w_px_n7, screen_h_px_n7 = 2592, 1944 #800, 1280
 screen_y_offset_px_n7 = 32                     # For notification bar at top of screen
 
 class Device:
-    
+
     def __init__(self, device_type):
-        
+
         self.device_type = device_type
-        
+
         # General Nexus 7 settings
         if device_type == NEXUS_7 or device_type == NEXUS_7_INV:
             self.fx, self.fy = cam_mat_n7[0][0], cam_mat_n7[1][1]
@@ -32,12 +38,12 @@ class Device:
             self.offset_mm = 47, 16
             self.rot90s = 1
             self.mirror = False
-        
-        # Special settings for inverted Nexus 7    
+
+        # Special settings for inverted Nexus 7
         if device_type == NEXUS_7_INV:
             self.offset_mm = 47, -(self.screen_size_mm[1] + 16)
             self.rot90s = -1
-            
+
         # Dummy values for Webcam (use N7 as default), these have not been calibrated
         if device_type == WEBCAM:
             self.fx, self.fy = cam_mat_n7[0][0], cam_mat_n7[1][1]
@@ -48,9 +54,9 @@ class Device:
             self.offset_mm = 0, 0
             self.rot90s = 0
             self.mirror = True
-        
+
     def get_intrisic_cam_params(self):
         return self.fx, self.fy, self.cx, self.cy
-    
+
     def get_dist_coeffs(self):
         return dist_coefs_n7
